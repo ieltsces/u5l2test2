@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Where Were You Yesterday? – Phòng lồng tiếng Anh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F8EE; --paper:#FFFFFF; --ink:#23311C; --muted:#5B6B52; --line:#D8E6CB;
+  --grass:#4F8F2F; --grass-soft:#E2F2D5; --barn:#D93A2B; --barn-soft:#FDE6E1;
+  --yolk:#F4C02F; --yolk-soft:#FFF5D1; --sky:#2F7FB8; --sky-soft:#E3F0FA;
+  --hz:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.5 Nunito,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:16px 48px}
+.rooms{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.rooms a{font-weight:800;font-size:14px;text-decoration:none;color:var(--muted);background:var(--paper);border:2px solid var(--line);border-radius:99px;padding:5px 12px}
+.rooms a.on{color:var(--ink);border-color:var(--grass);background:var(--grass-soft)}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px}
+h1{font:800 clamp(26px,4.2vw,40px)/1.05 "Baloo 2",Nunito,sans-serif;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 span{color:var(--barn)}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.name{display:flex;align-items:center;gap:8px;font-weight:700}
+.name input{font:inherit;padding:8px 12px;border:2px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);width:180px}
+.name input:focus{outline:none;border-color:var(--grass)}
+.notice{background:var(--barn-soft);border:2px solid var(--barn);border-radius:14px;padding:12px 16px;margin-bottom:16px;font-weight:700}
+
+.tabs{display:flex;gap:6px;margin-bottom:16px;border-bottom:3px solid var(--line);overflow-x:auto}
+.tab{border-radius:14px 14px 0 0;padding:12px 18px;font-size:17px;background:transparent;box-shadow:none;color:var(--muted);margin-bottom:-3px;border:3px solid transparent;white-space:nowrap}
+.tab:active{transform:none;box-shadow:none}
+.tab[aria-selected="true"]{background:var(--paper);color:var(--ink);border-color:var(--line);border-bottom-color:var(--paper)}
+.tab.t-try[aria-selected="true"]{color:var(--barn)}
+.tab small{display:block;font:700 12px Nunito,sans-serif;color:var(--muted);margin-top:2px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.stagebox{position:sticky;top:12px;display:flex;flex-direction:column;gap:12px}
+@media (max-width:860px){.stagebox{position:static}}
+
+/* ---------- Khung video ---------- */
+.stage{position:relative;border-radius:18px;overflow:hidden;background:#000;max-width:100%;box-shadow:0 6px 0 var(--line);container-type:inline-size}
+.stage:fullscreen{border-radius:0;aspect-ratio:auto!important;width:100vw;height:100vh;box-shadow:none}
+.stage>video{width:100%;height:100%;display:block;object-fit:contain;cursor:pointer}
+.ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.count{font:800 min(22vw,150px)/1 "Baloo 2",sans-serif;color:#fff;text-shadow:0 4px 0 var(--barn),0 0 30px rgba(0,0,0,.5);animation:pop .7s ease-out}
+@keyframes pop{from{transform:scale(1.6);opacity:0}to{transform:scale(1);opacity:1}}
+.badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-weight:800;font-size:14px;color:#fff;background:rgba(0,0,0,.55)}
+.badge.rec{background:var(--barn)}
+.badge.rec::before{content:"";width:10px;height:10px;border-radius:50%;background:#fff;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.2}}
+.bigplay{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:clamp(56px,13cqw,92px);aspect-ratio:1;border-radius:50%;justify-content:center;padding:0;background:rgba(255,255,255,.95);box-shadow:0 4px 18px rgba(0,0,0,.3)}
+.bigplay:active{transform:translate(-50%,-48%)}
+.bigplay svg{width:45%;height:45%;fill:var(--barn);margin-left:8%}
+.startdub{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:14px;background:var(--barn);color:#fff;border-radius:18px;padding:16px 26px 16px 20px;font:800 clamp(15px,3cqw,24px)/1.15 "Baloo 2",Nunito,sans-serif;text-align:left;box-shadow:0 6px 22px rgba(0,0,0,.35)}
+.startdub:active{transform:translate(-50%,-48%)}
+.startdub svg{width:1.5em;height:1.5em;flex:none}
+
+/* Phụ đề karaoke trên video */
+.kara{position:absolute;left:var(--ks,3%);right:var(--ks,3%);bottom:var(--kb,2%);min-height:var(--kh,11%);display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.97);border-radius:12px;padding:.3em .8em;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.kline{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:0 .32em;font:800 clamp(14px,4.6cqw,34px)/1.2 "Baloo 2",Nunito,sans-serif;text-align:center}
+.zh .kline{gap:0 .08em;font-family:var(--hz);font-weight:700}
+.ku{display:inline-flex;flex-direction:column;align-items:center}
+.ku .t,.ku .p{--p:0%;background:linear-gradient(90deg,var(--barn) var(--p),#2b2b2b var(--p));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ku .p{font:700 .48em/1.1 Nunito,sans-serif;background:linear-gradient(90deg,var(--barn) var(--p),#777 var(--p));-webkit-background-clip:text;background-clip:text}
+.kara.next .ku .t,.kara.next .ku .p{opacity:.75}
+
+/* Camera tròn (tab Thử tài) */
+.cam{position:absolute;right:3%;top:3%;width:clamp(72px,24cqw,200px);aspect-ratio:1;border-radius:50%;overflow:hidden;border:4px solid rgba(255,255,255,.95);background:#2a2a2a;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.cam canvas{width:100%;height:100%;display:block}
+.cam video{position:absolute;width:2px;height:2px;opacity:0;pointer-events:none}
+.camoff{position:absolute;inset:0;display:grid;place-items:center;color:#ddd;font-size:clamp(20px,5cqw,40px)}
+.camtoggle{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);padding:4px 12px;border-radius:99px;font-size:clamp(11px,1.8cqw,14px);background:rgba(0,0,0,.55);color:#fff;box-shadow:none}
+.camtoggle:active{transform:translateX(-50%) translateY(1px);box-shadow:none}
+.camtoggle.off{background:var(--barn)}
+
+/* Thanh điều khiển */
+.vbar{transition:opacity .25s;position:absolute;left:10px;right:10px;bottom:10px;background:rgba(20,20,20,.75);backdrop-filter:blur(6px);border-radius:14px;padding:8px 12px 6px;color:#fff;z-index:3}
+.seek{position:relative;height:18px;cursor:pointer;display:flex;align-items:center;touch-action:none}
+.seek::before{content:"";position:absolute;left:0;right:0;height:5px;border-radius:9px;background:rgba(255,255,255,.3)}
+.seek i{position:absolute;left:0;height:5px;border-radius:9px;background:#fff;width:0}
+.seek b{position:absolute;width:13px;height:13px;border-radius:50%;background:#fff;left:0;transform:translateX(-50%)}
+.seek.locked{cursor:default}
+.vrow{display:flex;align-items:center;gap:6px}
+.vrow button{background:transparent;color:#fff;box-shadow:none;padding:6px 8px;border-radius:10px}
+.vrow button:hover{background:rgba(255,255,255,.12)}
+.vrow button:active{transform:none;box-shadow:none}
+.vrow svg{width:22px;height:22px;display:block;fill:#fff}
+.time{font:700 14px/1 ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:4px}
+.grow{flex:1}
+.ccbtn{font:800 13px/1 Nunito,sans-serif!important;border:2px solid #fff!important;padding:5px 7px!important}
+.ccbtn.on{background:#1E9BE9!important;border-color:#1E9BE9!important}
+@container (max-width:430px){.time{font-size:12px}.vrow svg{width:19px;height:19px}}
+/* Thanh điều khiển chỉ hiện khi dừng, hoặc khi rê chuột/chạm vào video */
+.stage .vbar{opacity:0;pointer-events:none}
+.stage:not(.playing) .vbar,.stage.peek:not(.run) .vbar,.stage:not(.run):hover .vbar{opacity:1;pointer-events:auto}
+
+button{font:800 15px/1 Nunito,sans-serif;border:0;border-radius:14px;padding:12px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--ink);background:var(--paper);box-shadow:0 3px 0 var(--line);transition:transform .08s}
+button:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+button:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+button:disabled{opacity:.45;cursor:not-allowed}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.b-stop{background:var(--ink);color:#fff;box-shadow:none}
+.b-rec{background:var(--barn);color:#fff;box-shadow:0 3px 0 #9b2a1f}
+.b-big{font-size:17px;padding:14px 20px}
+.b-green{background:var(--grass);color:#fff;box-shadow:0 3px 0 #356420}
+.b-sky{background:var(--sky-soft);color:var(--sky)}
+.tip{background:var(--yolk-soft);border-radius:14px;padding:10px 14px;font-size:14px;color:var(--ink)}
+.msg{min-height:1.5em;font-weight:700;color:var(--barn)}
+.toggle{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:14px;background:var(--paper);border:2px solid var(--line);border-radius:99px;padding:8px 14px;cursor:pointer;user-select:none}
+.toggle input{width:18px;height:18px;accent-color:var(--grass)}
+
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:8px 10px}
+.filters b{font:800 15px Nunito,sans-serif;margin-right:4px}
+.chip{padding:7px 11px;font-size:14px;border-radius:99px;box-shadow:none;border:2px solid var(--line);background:var(--paper);gap:5px}
+.chip span{font-size:18px;line-height:1}
+.chip:active{transform:translateY(1px);box-shadow:none}
+.chip.on{background:var(--yolk-soft);border-color:var(--yolk);color:var(--ink)}
+.fstate{font-size:13px;color:var(--muted);font-weight:700}
+
+.result{background:var(--paper);border:2px solid var(--grass);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.result h2{font:800 20px/1.2 "Baloo 2",sans-serif;margin:0;color:var(--grass)}
+.result p{margin:0;color:var(--muted);font-size:14px}
+.result video{width:100%;border-radius:12px;background:#000}
+.dl{display:inline-flex;align-items:center;gap:8px;background:var(--barn);color:#fff;text-decoration:none;font-weight:800;font-size:17px;padding:14px 20px;border-radius:14px;box-shadow:0 3px 0 #9b2a1f}
+
+/* Lời bài hát */
+.list{display:flex;flex-direction:column;gap:8px}
+.list h2,.practice h2{font:800 22px/1.2 "Baloo 2",sans-serif;margin:0 0 2px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.list h2 small,.practice h2 small{font:700 14px Nunito,sans-serif;color:var(--muted)}
+.lyr{display:grid;grid-template-columns:44px 1fr;gap:2px 10px;align-items:center;text-align:left;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:9px 12px;box-shadow:none;width:100%;font:inherit}
+.lyr:active{transform:none}
+.lyr.active{border-color:var(--yolk);background:var(--yolk-soft)}
+.lyr .tm{font:700 12px ui-monospace,Menlo,Consolas,monospace;color:var(--muted);grid-row:span 2}
+.lyr .ln{font:800 18px/1.25 "Baloo 2",Nunito,sans-serif}
+.zh .lyr .ln{font-family:var(--hz);font-weight:700;font-size:20px}
+.lyr .py{font:700 13px Nunito,sans-serif;color:var(--sky)}
+.lyr .vi{color:var(--muted);font-size:14px;font-weight:600}
+
+/* Tab Luyện tập */
+.practice{display:flex;flex-direction:column;gap:12px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:12px}
+.pcard{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:center}
+.pcard.playing{border-color:var(--yolk);background:var(--yolk-soft)}
+.spk{width:58px;height:58px;border-radius:50%;justify-content:center;padding:0;background:var(--sky);color:#fff;box-shadow:0 3px 0 #1f5a85;grid-row:span 2}
+.spk svg{width:30px;height:30px;fill:#fff}
+.ptext .kline{justify-content:flex-start;font-size:clamp(20px,2.4vw,26px)}
+.pcard .vi{color:var(--muted);font-size:14px;font-weight:600}
+.pcard .rep{font:700 12px Nunito,sans-serif;color:var(--grass);background:var(--grass-soft);border-radius:99px;padding:2px 8px;margin-left:6px;white-space:nowrap}
+.pacts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pacts button{padding:9px 12px;font-size:14px;border-radius:12px}
+.b-slow.on{background:var(--grass-soft);color:var(--grass)}
+.b-mine{background:var(--grass-soft)}
+.recording{animation:blink 1s infinite}
+@media (prefers-reduced-motion:reduce){.count,.badge.rec::before,.recording{animation:none}}
+canvas#cv{display:none}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <nav class="rooms" id="rooms" aria-label="Các phòng lồng tiếng"></nav>
+  <header>
+    <div>
+      <h1 id="h1"></h1>
+      <p class="sub" id="sub"></p>
+    </div>
+    <label class="name" for="stuName">Tên em:
+      <input id="stuName" placeholder="VD: Minh Anh" maxlength="30"></label>
+  </header>
+
+  <div class="notice" id="notice" hidden></div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab1" aria-selected="true">🎬 Nghe mẫu</button>
+    <button class="tab" role="tab" id="tab2" aria-selected="false">🗣 Luyện tập</button>
+    <button class="tab t-try" role="tab" id="tab3" aria-selected="false">🎤 Thử tài</button>
+  </div>
+
+  <!-- Tab 1 và Tab 3 dùng chung khung video -->
+  <div class="grid" id="videoArea">
+    <div class="stagebox">
+      <div class="stage" id="stage">
+        <video id="vid" playsinline preload="auto"></video>
+        <div class="kara" id="kara" hidden><div class="kline" id="kline"></div></div>
+        <div class="ov" id="ov"></div>
+        <div class="badge" id="badge" hidden></div>
+        <button class="bigplay" id="bBigPlay" aria-label="Phát video"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+        <button class="startdub" id="bDub" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+          <span>Bắt đầu<br>Thử tài</span>
+        </button>
+        <div class="cam" id="cam" hidden>
+          <canvas id="camCv" width="360" height="360"></canvas>
+          <video id="camVid" muted playsinline autoplay></video>
+          <div class="camoff" id="camOff" aria-hidden="true">📷</div>
+          <button class="camtoggle off" id="bCam" aria-label="Bật hoặc tắt camera">Bật</button>
+        </div>
+        <div class="vbar">
+          <div class="seek" id="seek" role="slider" aria-label="Thanh thời gian" tabindex="0"><i id="prog"></i><b id="knob"></b></div>
+          <div class="vrow">
+            <button id="bPlay" aria-label="Phát"><svg viewBox="0 0 24 24" id="icoPlay"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+            <button id="bMute" aria-label="Tắt tiếng"><svg viewBox="0 0 24 24" id="icoVol"><path d="M4 9v6h4l5 4V5L8 9z M15.5 8.5a5 5 0 0 1 0 7l-1.2-1.2a3.3 3.3 0 0 0 0-4.6z M18 6a8.5 8.5 0 0 1 0 12l-1.2-1.2a6.8 6.8 0 0 0 0-9.6z"/></svg></button>
+            <span class="time" id="time">0:00 / 0:00</span>
+            <span class="grow"></span>
+            <button class="ccbtn" id="bCC" aria-label="Phụ đề karaoke" aria-pressed="false">CC</button>
+            <button id="bFull" aria-label="Toàn màn hình"><svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip" id="tip1">🎬 Xem và nghe bài hát. Bấm vào một câu bên cạnh để nghe từ câu đó. Bấm <b>CC</b> để bật/tắt phụ đề karaoke.</div>
+
+      <div class="controls" id="tryControls" hidden>
+        <button class="b-rec b-big" id="bRecCam">🎤 Bắt đầu thử tài</button>
+        <button class="b-stop b-big" id="bStop" hidden>■ Dừng</button>
+        <label class="toggle" for="guide"><input type="checkbox" id="guide"> 🎵 Hát theo giọng mẫu (nhỏ)</label>
+      </div>
+      <div class="filters" id="filterBar" hidden>
+        <b>🎭 Mặt nạ:</b><span id="filterChips" style="display:contents"></span><span class="fstate" id="filterState"></span>
+      </div>
+      <div class="tip" id="tip3" hidden>🎧 Đeo tai nghe để nhạc không lọt vào micro. Video chỉ còn nhạc nền: em hát theo phụ đề, chữ chuyển <b style="color:var(--barn)">đỏ</b> tới đâu thì hát tới đó.</div>
+      <div class="msg" id="msg" role="status"></div>
+      <div class="result" id="result" hidden>
+        <h2>🎉 Thử tài xong rồi!</h2>
+        <p id="resInfo">Em xem lại video, rồi tải về để nộp bài cho cô.</p>
+        <video id="outVid" controls playsinline hidden></video>
+        <div class="controls">
+          <button class="b-green b-big" id="bReview">▶ Xem lại video</button>
+          <a class="dl" id="dl" href="#">⬇ Tải video về</a>
+          <button class="b-sky b-big" id="bRedo">🔁 Thử lại</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="list" aria-label="Lời bài hát">
+      <h2>Lời bài hát <small id="lyrHint">Bấm để nghe từ câu đó</small></h2>
+      <div id="lyrics"></div>
+    </section>
+  </div>
+
+  <!-- Tab 2: Luyện tập -->
+  <section class="practice" id="practiceArea" hidden>
+    <h2>Luyện từng câu <small>🔊 nghe câu · 🐢 nghe chậm · 🎤 thu giọng em · ▶ nghe lại</small></h2>
+    <div class="pgrid" id="pgrid"></div>
+  </section>
+</div>
+<canvas id="cv" width="1280" height="720"></canvas>
+<audio id="orig" preload="auto"></audio>
+<audio id="clip" preload="auto"></audio>
+<!--@@DATA@@-->
+<script>
+const ROOM={"lang": "en", "self": "where-en.html", "title": "Where Were You Yesterday? – Phòng lồng tiếng Anh", "h1": "Where Were You <span>Yesterday?</span>", "sub": "Little Fox · Bài hát tiếng Anh · 8 câu", "video": "where-en.mp4", "audio": "where-en-goc.mp3", "poster": "where-en-poster.jpg", "aspect": [300, 240], "canvas": [960, 768], "kara": {"bottom": "0.4%", "height": "12%", "side": "0.8%"}, "cc1": false, "fileBase": "WhereWereYou_EN", "rooms": [{"href": "index.html", "label": "🏠 Trang chủ"}, {"href": "where-en.html", "label": "🔤 Where Were You Yesterday? (Tiếng Anh)"}, {"href": "where-zh.html", "label": "🀄 你昨天在哪里？(Tiếng Trung)"}], "lines": [{"text": "Where were you yesterday?", "u": ["Where", "were", "you", "yesterday?"], "py": null, "ws": [7.94, 8.54, 8.78, 9.14], "we": [8.52, 8.76, 9.12, 9.36], "s": 7.94, "e": 9.36, "vi": "Hôm qua bạn ở đâu?"}, {"text": "Where were you yesterday?", "u": ["Where", "were", "you", "yesterday?"], "py": null, "ws": [10.04, 10.52, 10.76, 11.06], "we": [10.5, 10.74, 11.04, 11.26], "s": 10.04, "e": 11.26, "vi": "Hôm qua bạn ở đâu?"}, {"text": "I was at the museum.", "u": ["I", "was", "at", "the", "museum."], "py": null, "ws": [12.08, 12.5, 13.16, 13.64, 14.24], "we": [12.48, 13.14, 13.62, 14.22, 14.6], "s": 12.08, "e": 14.6, "vi": "Tớ đã ở bảo tàng."}, {"text": "Where are you now?", "u": ["Where", "are", "you", "now?"], "py": null, "ws": [16.1, 16.64, 16.88, 17.12], "we": [16.62, 16.86, 17.1, 17.98], "s": 16.1, "e": 17.98, "vi": "Bây giờ bạn ở đâu?"}, {"text": "Where are you now?", "u": ["Where", "are", "you", "now?"], "py": null, "ws": [18.08, 18.62, 18.86, 19.16], "we": [18.6, 18.84, 19.14, 19.9], "s": 18.08, "e": 19.9, "vi": "Bây giờ bạn ở đâu?"}, {"text": "I am at the zoo.", "u": ["I", "am", "at", "the", "zoo."], "py": null, "ws": [20.0, 20.54, 21.14, 21.68, 22.28], "we": [20.52, 21.12, 21.66, 22.26, 23.07], "s": 20.0, "e": 23.07, "vi": "Tớ đang ở sở thú."}, {"text": "Where were they yesterday?", "u": ["Where", "were", "they", "yesterday?"], "py": null, "ws": [32.14, 32.68, 32.92, 33.28], "we": [32.66, 32.9, 33.26, 33.49], "s": 32.14, "e": 33.49, "vi": "Hôm qua họ ở đâu?"}, {"text": "Where were they yesterday?", "u": ["Where", "were", "they", "yesterday?"], "py": null, "ws": [34.24, 34.72, 34.96, 35.32], "we": [34.7, 34.94, 35.3, 35.52], "s": 34.24, "e": 35.52, "vi": "Hôm qua họ ở đâu?"}, {"text": "They were at the swimming pool.", "u": ["They", "were", "at", "the", "swimming", "pool."], "py": null, "ws": [36.22, 36.64, 37.36, 37.72, 38.26, 39.34], "we": [36.62, 37.34, 37.7, 38.24, 39.16, 39.91], "s": 36.22, "e": 39.91, "vi": "Họ đã ở bể bơi."}, {"text": "Where are they now?", "u": ["Where", "are", "they", "now?"], "py": null, "ws": [40.36, 40.84, 41.08, 41.38], "we": [40.82, 41.06, 41.36, 42.28], "s": 40.36, "e": 42.28, "vi": "Bây giờ họ ở đâu?"}, {"text": "Where are they now?", "u": ["Where", "are", "they", "now?"], "py": null, "ws": [42.4, 42.88, 43.12, 43.42], "we": [42.86, 43.1, 43.4, 44.22], "s": 42.4, "e": 44.22, "vi": "Bây giờ họ ở đâu?"}, {"text": "They're at the park.", "u": ["They're", "at", "the", "park."], "py": null, "ws": [44.32, 45.4, 45.82, 46.24], "we": [45.22, 45.8, 46.22, 47.37], "s": 44.32, "e": 47.37, "vi": "Họ đang ở công viên."}], "offset": 0};
+const LINES=ROOM.lines;
+const $=id=>document.getElementById(id);
+const video=$("vid"), orig=$("orig"), clip=$("clip"), camVid=$("camVid");
+const ORIG_OFFSET=ROOM.offset||0;
+
+//@@MEDIA_START
+const SINGLE=false;
+const VIDEO_SRCS=[ROOM.video,"media/"+ROOM.video];      // video (chỉ còn nhạc nền)
+const MODEL_SRCS=[ROOM.audio,"media/"+ROOM.audio];      // âm thanh gốc (có giọng hát)
+const POSTER_SRCS=[ROOM.poster,"media/"+ROOM.poster];   // ảnh bìa
+function initMedia(){
+  video.src=VIDEO_SRCS[0]; orig.src=MODEL_SRCS[0]; clip.src=MODEL_SRCS[0];
+  const im=new Image(); let k=0;
+  im.onload=()=>video.poster=POSTER_SRCS[k];
+  im.onerror=()=>{ if(++k<POSTER_SRCS.length) im.src=POSTER_SRCS[k]; };
+  im.src=POSTER_SRCS[0];
+}
+//@@MEDIA_END
+
+let videoIdx=0, modelIdx=0;
+const IS_FILE=location.protocol==="file:"&&!SINGLE;
+let ctx,bgmGain,mixDest,micStream,micNode,camStream=null,camOn=false,camUserOff=false;
+let abortFlag=false,busy=false,primed=false,tab=1,lastResult=null,ccOn=!!ROOM.cc1;
+
+/* ---------- Giao diện chung ---------- */
+document.title=ROOM.title;
+if(ROOM.lang==="zh") $("app").classList.add("zh");
+$("h1").innerHTML=ROOM.h1; $("sub").textContent=ROOM.sub;
+$("rooms").innerHTML=(ROOM.rooms||[]).map(r=>`<a href="${r.href}" class="${r.href===ROOM.self?'on':''}">${r.label}</a>`).join("");
+$("stage").style.aspectRatio=ROOM.aspect[0]+"/"+ROOM.aspect[1];
+$("kara").style.setProperty("--kb",ROOM.kara.bottom); $("kara").style.setProperty("--kh",ROOM.kara.height); $("kara").style.setProperty("--ks",ROOM.kara.side||"3%");
+const cv=$("cv"); cv.width=ROOM.canvas[0]; cv.height=ROOM.canvas[1];
+function msg(t){$("msg").textContent=t||"";}
+function showNotice(t){const n=$("notice");n.hidden=false;n.textContent="⚠️ "+t;}
+function mediaErr(name){return IS_FILE
+  ? "Không mở được "+name+" khi mở file trực tiếp. Hãy dùng link GitHub Pages (https://...github.io/...)."
+  : "Không tải được "+name+". Kiểm tra đã tải file này lên GitHub (cùng chỗ với trang này) chưa, và tên file có đúng từng chữ không.";}
+video.addEventListener("error",()=>{
+  if(++videoIdx<VIDEO_SRCS.length){ video.src=VIDEO_SRCS[videoIdx]; video.load(); return; }
+  showNotice(mediaErr(VIDEO_SRCS[0]));
+});
+orig.addEventListener("error",()=>{
+  if(++modelIdx<MODEL_SRCS.length){ orig.src=MODEL_SRCS[modelIdx]; clip.src=MODEL_SRCS[modelIdx]; orig.load(); return; }
+  showNotice(mediaErr(MODEL_SRCS[0])+" (Tab Nghe mẫu và Luyện tập sẽ không có tiếng hát.)");
+});
+if(IS_FILE) showNotice("Bạn đang mở file trực tiếp trên máy nên có thể không phát được video và không ghi hình được. Hãy mở qua link GitHub Pages (https://...github.io/...).");
+initMedia();
+function fmt(t){t=Math.max(0,Math.floor(t||0));return Math.floor(t/60)+":"+String(t%60).padStart(2,"0");}
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+/* ---------- Karaoke ---------- */
+function unitsHTML(L){
+  return L.u.map((u,k)=>`<span class="ku">${L.py?`<span class="p">${esc(L.py[k]||"")}</span>`:""}<span class="t">${esc(u)}</span></span>`).join("");
+}
+function paint(container,L,t){ // tô màu theo thời gian t
+  const ks=container.querySelectorAll(".ku");
+  ks.forEach((el,k)=>{
+    const s=L.ws[k], e=Math.max(L.we[k],s+0.05);
+    const p=t<=s?0:t>=e?100:(t-s)/(e-s)*100;
+    el.querySelectorAll(".t,.p").forEach(x=>x.style.setProperty("--p",p.toFixed(1)+"%"));
+  });
+}
+function lineAt(t){ // câu đang hát, hoặc câu sắp hát (trước 1,2 giây)
+  for(let i=0;i<LINES.length;i++){
+    const L=LINES[i], nx=LINES[i+1];
+    if(t>=L.s-1.2&&t<=L.e+0.6&&!(nx&&t>=nx.s-0.15)) return i;
+  }
+  return -1;
+}
+let karaIdx=-2;
+function updateKara(t){
+  const show=(tab===3)||(tab===1&&ccOn);
+  const box=$("kara");
+  const i=show?lineAt(t):-1;
+  if(i<0){ box.hidden=true; karaIdx=-1; return; }
+  if(i!==karaIdx){ $("kline").innerHTML=unitsHTML(LINES[i]); karaIdx=i; }
+  box.hidden=false; box.classList.toggle("next",t<LINES[i].s);
+  paint($("kline"),LINES[i],t);
+}
+
+/* ---------- Danh sách lời ---------- */
+function renderLyrics(){
+  $("lyrics").innerHTML=LINES.map((L,i)=>`
+    <button class="lyr" data-i="${i}" id="ly${i}">
+      <span class="tm">${fmt(L.s)}</span>
+      <span>${L.py?`<span class="py">${esc(L.py.join(" "))}</span><br>`:""}<span class="ln">${esc(L.text)}</span></span>
+      <span class="vi">${esc(L.vi)}</span>
+    </button>`).join("");
+}
+renderLyrics();
+$("lyrics").addEventListener("click",e=>{
+  const b=e.target.closest(".lyr"); if(!b||busy) return;
+  const L=LINES[+b.dataset.i];
+  seekTo(Math.max(0,L.s-0.6));
+  if(video.paused) lightPlay();
+});
+let lyrIdx=-2;
+function markLyric(t){
+  let k=-1; for(let i=0;i<LINES.length;i++){ if(t>=LINES[i].s-0.2&&t<=LINES[i].e+0.4){k=i;break;} }
+  if(k===lyrIdx) return; lyrIdx=k;
+  document.querySelectorAll(".lyr").forEach((el,j)=>el.classList.toggle("active",j===k));
+}
+
+/* ---------- Tab ---------- */
+function setTab(n){
+  if(n===tab||busy) return;
+  lightPause(); stopClip(); stopPracticeRec();
+  tab=n;
+  [1,2,3].forEach(k=>$("tab"+k).setAttribute("aria-selected",k===n));
+  $("videoArea").hidden=n===2; $("practiceArea").hidden=n!==2;
+  const t3=n===3;
+  $("cam").hidden=!t3; $("tryControls").hidden=!t3; $("filterBar").hidden=!t3; $("tip3").hidden=!t3; $("tip1").hidden=n!==1;
+  $("result").hidden=!(t3&&lastResult);
+  $("lyrHint").textContent=t3?"Hát theo lời này":"Bấm để nghe từ câu đó";
+  if(!t3) $("outVid").pause();
+  ccOn=t3?true:!!ROOM.cc1; syncCC();
+  msg(""); refreshStage(); tick();
+  if(t3){ if(!camOn&&!camUserOff) camStart(); } else camStop(false);
+}
+[1,2,3].forEach(k=>$("tab"+k).onclick=()=>setTab(k));
+
+/* ---------- Trạng thái ---------- */
+const ICON_PLAY='<path d="M7 4.5v15l13-7.5z"/>', ICON_STOP='<rect x="6" y="6" width="12" height="12" rx="2"/>', ICON_PAUSE='<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>';
+function badge(t,rec){const b=$("badge"); if(!t){b.hidden=true;return;} b.hidden=false;b.textContent=t;b.classList.toggle("rec",!!rec);}
+function refreshStage(){
+  const playing=!video.paused&&!video.ended;
+  $("stage").classList.toggle("playing",playing||busy);
+  $("stage").classList.toggle("run",busy);
+  $("bBigPlay").hidden=busy||playing||tab!==1;
+  $("bDub").hidden=busy||playing||tab!==3;
+  $("icoPlay").innerHTML=busy?ICON_STOP:(playing?ICON_PAUSE:ICON_PLAY);
+  $("bPlay").setAttribute("aria-label",busy?"Dừng":(playing?"Tạm dừng":"Phát"));
+  $("seek").classList.toggle("locked",busy);
+}
+function setBusy(v){
+  busy=v;
+  $("bStop").hidden=!v; $("bRecCam").hidden=v;
+  ["tab1","tab2","tab3","bReview","bRedo","guide"].forEach(id=>$(id).disabled=v);
+  refreshStage();
+}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function tick(){
+  const d=video.duration||0, t=video.currentTime, p=d?t/d*100:0;
+  $("prog").style.width=p+"%"; $("knob").style.left=p+"%";
+  $("time").textContent=fmt(t)+" / "+fmt(d);
+  updateKara(t); markLyric(t);
+  if(tab===1&&!busy&&!video.paused&&!orig.paused&&Math.abs(orig.currentTime-(t+ORIG_OFFSET))>0.3) orig.currentTime=t+ORIG_OFFSET;
+}
+video.addEventListener("timeupdate",tick); video.addEventListener("loadedmetadata",tick); video.addEventListener("seeked",tick);
+["play","playing","pause","ended"].forEach(ev=>video.addEventListener(ev,()=>{ if((ev==="pause"||ev==="ended")&&!busy&&(video.paused||video.ended)) orig.pause(); refreshStage(); }));
+(function raf(){ if(!video.paused) tick(); requestAnimationFrame(raf); })();   // karaoke mượt
+
+/* ---------- Âm thanh ---------- */
+function setBgm(v){ if(bgmGain) bgmGain.gain.value=v; else video.volume=Math.min(1,v); }
+function prime(){
+  if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)();
+  if(ctx.state!=="running") ctx.resume();
+  if(primed) return; primed=true;
+  [video,orig,clip].forEach(m=>{ try{ const p=m.play(); m.pause(); if(p) p.catch(()=>{}); }catch(e){} });
+}
+async function initAudio(){
+  if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)();
+  if(!mixDest) mixDest=ctx.createMediaStreamDestination();
+  if(!IS_FILE&&!bgmGain){
+    const src=ctx.createMediaElementSource(video);
+    bgmGain=ctx.createGain(); src.connect(bgmGain); bgmGain.connect(ctx.destination); bgmGain.connect(mixDest);
+  }
+  if(ctx.state!=="running") await ctx.resume();
+}
+async function ensureMic(){
+  if(micStream) return true;
+  try{
+    micStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+    return true;
+  }catch(err){
+    msg("Không mở được micro. Hãy cho phép trình duyệt dùng micro (biểu tượng ổ khoá trên thanh địa chỉ) rồi thử lại.");
+    return false;
+  }
+}
+
+/* ---------- Phát video (tab 1: có giọng hát, tab 3: nhạc nền) ---------- */
+async function lightPlay(){
+  prime(); msg("");
+  try{ await initAudio(); }catch(e){}
+  if(video.ended||video.currentTime>=(video.duration||1)-0.2) video.currentTime=0;
+  if(tab===1){ setBgm(0); orig.volume=1; orig.currentTime=video.currentTime+ORIG_OFFSET; orig.play().catch(()=>{}); }
+  else { setBgm(1); if($("guide").checked){ orig.volume=0.3; orig.currentTime=video.currentTime+ORIG_OFFSET; orig.play().catch(()=>{}); } else orig.pause(); }
+  try{ await video.play(); }catch(e){ orig.pause(); msg(video.error?mediaErr(VIDEO_SRCS[0]):"Trình duyệt chặn phát video. Hãy bấm lại nút một lần nữa."); }
+}
+function lightPause(){ video.pause(); orig.pause(); }
+function togglePlay(){
+  if(busy){ abortFlag=true; return; }
+  if(video.paused||video.ended) lightPlay(); else lightPause();
+}
+$("bPlay").onclick=togglePlay; $("bBigPlay").onclick=togglePlay;
+video.addEventListener("click",()=>{ if(!busy) togglePlay(); });
+let peekTimer;
+$("stage").addEventListener("pointermove",e=>{
+  if(e.pointerType==="mouse") return;
+  $("stage").classList.add("peek"); clearTimeout(peekTimer); peekTimer=setTimeout(()=>$("stage").classList.remove("peek"),2500);
+});
+$("bMute").onclick=()=>{
+  const m=!video.muted; video.muted=m; orig.muted=m;
+  $("icoVol").innerHTML=m
+    ?'<path d="M4 9v6h4l5 4V5L8 9z M16 9.4l1.4-1.4 2.1 2.1 2.1-2.1 1.4 1.4-2.1 2.1 2.1 2.1-1.4 1.4-2.1-2.1-2.1 2.1-1.4-1.4 2.1-2.1z"/>'
+    :'<path d="M4 9v6h4l5 4V5L8 9z M15.5 8.5a5 5 0 0 1 0 7l-1.2-1.2a3.3 3.3 0 0 0 0-4.6z M18 6a8.5 8.5 0 0 1 0 12l-1.2-1.2a6.8 6.8 0 0 0 0-9.6z"/>';
+};
+function syncCC(){ $("bCC").classList.toggle("on",ccOn); $("bCC").setAttribute("aria-pressed",ccOn); karaIdx=-2; tick(); }
+$("bCC").onclick=()=>{ ccOn=!ccOn; syncCC(); };
+syncCC();
+$("bFull").onclick=()=>{
+  const st=$("stage");
+  if(document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+  else if(st.requestFullscreen) st.requestFullscreen().catch(()=>{});
+  else if(video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+};
+function seekTo(t){
+  video.currentTime=t;
+  if(!video.paused&&!orig.paused) orig.currentTime=t+ORIG_OFFSET;
+  tick();
+}
+function seekFromEvent(e){
+  if(busy||!video.duration) return;
+  const r=$("seek").getBoundingClientRect();
+  seekTo(Math.min(1,Math.max(0,(e.clientX-r.left)/r.width))*video.duration);
+}
+$("seek").addEventListener("pointerdown",e=>{seekFromEvent(e);$("seek").setPointerCapture(e.pointerId);});
+$("seek").addEventListener("pointermove",e=>{if(e.buttons)seekFromEvent(e);});
+$("seek").addEventListener("keydown",e=>{
+  if(busy||!video.duration)return;
+  if(e.key==="ArrowRight")seekTo(Math.min(video.duration,video.currentTime+5));
+  if(e.key==="ArrowLeft")seekTo(Math.max(0,video.currentTime-5));
+});
+$("guide").onchange=()=>{ if(tab===3&&!video.paused&&!busy) lightPlay(); };
+
+/* ---------- Tab 2: Luyện tập từng câu ---------- */
+// gộp các câu giống nhau (câu lặp lại trong bài) thành một thẻ
+const SENTS=[];
+LINES.forEach((L,i)=>{ const f=SENTS.find(s=>s.text===L.text); if(f) f.count++; else SENTS.push({text:L.text,line:i,count:1}); });
+const myRec=new Array(SENTS.length).fill(null);
+function renderPractice(){
+  $("pgrid").innerHTML=SENTS.map((S,k)=>{const L=LINES[S.line]; return `
+    <div class="pcard" id="pc${k}">
+      <button class="spk" data-a="play" data-k="${k}" aria-label="Nghe câu ${k+1}"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z M15.5 8.5a5 5 0 0 1 0 7l-1.2-1.2a3.3 3.3 0 0 0 0-4.6z M18 6a8.5 8.5 0 0 1 0 12l-1.2-1.2a6.8 6.8 0 0 0 0-9.6z"/></svg></button>
+      <div class="ptext"><div class="kline" id="pk${k}">${unitsHTML(L)}</div></div>
+      <div class="vi">${esc(L.vi)}${S.count>1?`<span class="rep">hát ${S.count} lần</span>`:""}</div>
+      <div class="pacts">
+        <button class="b-slow" data-a="slow" data-k="${k}">🐢 Nghe chậm</button>
+        <button class="b-rec" data-a="rec" data-k="${k}" id="pr${k}">🎤 Thu giọng em</button>
+        <button class="b-mine" data-a="mine" data-k="${k}" id="pm${k}" ${myRec[k]?"":"disabled"}>▶ Nghe lại giọng em</button>
+      </div>
+    </div>`;}).join("");
+}
+renderPractice();
+let clipEnd=0, clipK=-1, clipRaf=0;
+function stopClip(){
+  clip.pause(); cancelAnimationFrame(clipRaf);
+  if(clipK>=0){ $("pc"+clipK).classList.remove("playing"); paint($("pk"+clipK),LINES[SENTS[clipK].line],-1); }
+  clipK=-1;
+}
+async function playClip(k,rate){
+  prime(); stopClip(); stopPracticeRec();
+  const L=LINES[SENTS[k].line];
+  clipK=k; clipEnd=L.e+0.35; $("pc"+k).classList.add("playing");
+  clip.playbackRate=rate||1; clip.currentTime=Math.max(0,L.s-0.25+ORIG_OFFSET);
+  try{ await clip.play(); }catch(e){ msg(clip.error?mediaErr(MODEL_SRCS[0]):"Trình duyệt chặn phát âm thanh. Hãy bấm lại."); stopClip(); return; }
+  (function loop(){
+    if(clipK!==k) return;
+    const t=clip.currentTime-ORIG_OFFSET;
+    paint($("pk"+k),L,t);
+    if(t>=clipEnd||clip.paused||clip.ended){ stopClip(); return; }
+    clipRaf=requestAnimationFrame(loop);
+  })();
+}
+let pRec=null, pRecK=-1, pRecTimer=0, myAudio=new Audio();
+function stopPracticeRec(){
+  if(pRec&&pRec.state!=="inactive") pRec.stop();
+  clearTimeout(pRecTimer);
+}
+async function recPractice(k){
+  if(pRecK===k&&pRec&&pRec.state==="recording"){ stopPracticeRec(); return; }
+  stopClip(); stopPracticeRec(); myAudio.pause();
+  if(!(await ensureMic())) return;
+  const mt=["audio/webm;codecs=opus","audio/mp4","audio/webm"].find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t));
+  const rec=new MediaRecorder(micStream,mt?{mimeType:mt}:undefined), chunks=[];
+  pRec=rec; pRecK=k;
+  const btn=$("pr"+k); btn.textContent="⏹ Dừng thu"; btn.classList.add("recording");
+  rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+  rec.onstop=()=>{
+    btn.textContent="🎤 Thu lại"; btn.classList.remove("recording");
+    if(myRec[k]) URL.revokeObjectURL(myRec[k]);
+    myRec[k]=URL.createObjectURL(new Blob(chunks,{type:rec.mimeType||mt||"audio/webm"}));
+    $("pm"+k).disabled=false; pRecK=-1;
+    myAudio.src=myRec[k]; myAudio.play().catch(()=>{});   // nghe lại ngay
+  };
+  rec.start();
+  const L=LINES[SENTS[k].line];
+  pRecTimer=setTimeout(stopPracticeRec,Math.max(4000,(L.e-L.s+3)*1000));   // tự dừng
+}
+$("pgrid").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-a]"); if(!b) return;
+  const k=+b.dataset.k, a=b.dataset.a;
+  if(a==="play") playClip(k,1);
+  else if(a==="slow") playClip(k,0.7);
+  else if(a==="rec") recPractice(k);
+  else if(a==="mine"&&myRec[k]){ stopClip(); myAudio.src=myRec[k]; myAudio.play().catch(()=>{}); }
+});
+
+/* ---------- Camera + mặt nạ ---------- */
+async function camStart(){
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:640},height:{ideal:480}},audio:false});
+    if(tab!==3){ s.getTracks().forEach(t=>t.stop()); return; }
+    camStream=s; camVid.srcObject=s; await camVid.play().catch(()=>{});
+    camOn=true; camUserOff=false; startCamLoop();
+  }catch(e){ camOn=false; msg("Không mở được camera. Hãy cho phép trình duyệt dùng camera (biểu tượng ổ khoá trên thanh địa chỉ)."); }
+  camUI();
+}
+function camStop(byUser){
+  if(camStream) camStream.getTracks().forEach(t=>t.stop());
+  camStream=null; camVid.srcObject=null; camOn=false; if(byUser) camUserOff=true; camUI();
+}
+function camUI(){ $("camOff").hidden=camOn; $("bCam").textContent=camOn?"Tắt":"Bật"; $("bCam").classList.toggle("off",!camOn); }
+$("bCam").onclick=()=>camOn?camStop(true):camStart();
+/* ---------- Mặt nạ vui (face filter) ----------
+   Dùng MediaPipe Face Detector (tải từ Internet khi chọn mặt nạ lần đầu) để tìm mắt, mũi, miệng,
+   rồi vẽ tai / mũi / râu con vật lên khung camera. Hình vẽ con vật do trang tự vẽ bằng code. */
+const MP_VER="0.10.14";
+const MP_BASE=`https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MP_VER}`;
+const FACE_MODEL="https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite";
+const FILTERS=[
+  {id:"none",label:"Không",icon:"🚫"},
+  {id:"cat",label:"Mèo",icon:"🐱"},
+  {id:"dog",label:"Cún",icon:"🐶"},
+  {id:"bunny",label:"Thỏ",icon:"🐰"},
+  {id:"bear",label:"Gấu",icon:"🐻"},
+  {id:"fox",label:"Cáo",icon:"🦊"},
+  {id:"panda",label:"Gấu trúc",icon:"🐼"}
+];
+let pan={x:320,y:240}, filter="none", detector=null, detLoading=null, face=null, faceSeen=0, lastVT=-1, camLoopOn=false;
+const camCv=$("camCv"), cg=camCv.getContext("2d");
+
+function renderFilterChips(){
+  $("filterChips").innerHTML=FILTERS.map(f=>`<button class="chip ${f.id===filter?'on':''}" data-f="${f.id}" aria-pressed="${f.id===filter}"><span aria-hidden="true">${f.icon}</span>${f.label}</button>`).join("");
+}
+$("filterChips").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-f]"); if(!b) return;
+  setFilter(b.dataset.f);
+});
+async function setFilter(id){
+  filter=id; renderFilterChips();
+  if(id==="none") return;
+  if(!camOn&&!busy) camStart();
+  try{ await loadDetector(); }
+  catch(e){
+    console.error(e); filter="none"; renderFilterChips();
+    msg("Chưa tải được mặt nạ. Mặt nạ cần kết nối Internet, em kiểm tra mạng rồi chọn lại nhé.");
+  }
+}
+function loadDetector(){
+  if(detector) return Promise.resolve(detector);
+  if(detLoading) return detLoading;
+  $("filterState").textContent="Đang tải mặt nạ…";
+  detLoading=(async()=>{
+    const vision=await import(`${MP_BASE}/vision_bundle.mjs`);
+    const fs=await vision.FilesetResolver.forVisionTasks(`${MP_BASE}/wasm`);
+    const opts=d=>({baseOptions:{modelAssetPath:FACE_MODEL,delegate:d},runningMode:"VIDEO",minDetectionConfidence:0.5});
+    try{ detector=await vision.FaceDetector.createFromOptions(fs,opts("GPU")); }
+    catch(e){ detector=await vision.FaceDetector.createFromOptions(fs,opts("CPU")); }
+    return detector;
+  })();
+  detLoading.then(()=>$("filterState").textContent="",()=>{ $("filterState").textContent=""; detLoading=null; });
+  return detLoading;
+}
+function detectFace(){
+  if(!detector||filter==="none"||camVid.readyState<2) return;
+  if(camVid.currentTime===lastVT) return;
+  lastVT=camVid.currentTime;
+  let res; try{ res=detector.detectForVideo(camVid,performance.now()); }catch(e){ return; }
+  const det=res&&res.detections&&res.detections[0];
+  if(!det||!det.keypoints||det.keypoints.length<4) return;
+  const W=camVid.videoWidth,H=camVid.videoHeight, P=k=>({x:k.x*W,y:k.y*H});
+  let a=P(det.keypoints[0]), b=P(det.keypoints[1]);
+  if(a.x>b.x){const t=a;a=b;b=t;}
+  const n=P(det.keypoints[2]), m=P(det.keypoints[3]);
+  const nf={ex:(a.x+b.x)/2, ey:(a.y+b.y)/2, d:Math.hypot(b.x-a.x,b.y-a.y), ang:Math.atan2(b.y-a.y,b.x-a.x), nx:n.x, ny:n.y, mx:m.x, my:m.y};
+  if(face&&performance.now()-faceSeen<500){ for(const k in nf){ face[k]+=(nf[k]-face[k])*(k==="ang"?0.4:0.5); } }
+  else face=nf;
+  faceSeen=performance.now();
+}
+// Vẽ khung camera tròn: hình soi gương + mặt nạ
+function drawBubble(){
+  const S=camCv.width;
+  cg.setTransform(1,0,0,1,0,0); cg.fillStyle="#2a2a2a"; cg.fillRect(0,0,S,S);
+  if(!camOn||camVid.readyState<2||!camVid.videoWidth) return;
+  const vw=camVid.videoWidth, vh=camVid.videoHeight, s=Math.min(vw,vh), k=S/s;
+  // khung tròn nhẹ nhàng đi theo khuôn mặt (để thấy cả tai của mặt nạ)
+  let tx=vw/2, ty=vh/2;
+  if(filter!=="none"&&face&&performance.now()-faceSeen<600){ tx=face.ex; ty=face.ey+s*0.02; }
+  pan.x+=(tx-pan.x)*0.12; pan.y+=(ty-pan.y)*0.12;
+  pan.x=Math.min(vw-s/2,Math.max(s/2,pan.x)); pan.y=Math.min(vh-s/2,Math.max(s/2,pan.y));
+  const sx=pan.x-s/2, sy=pan.y-s/2;
+  cg.setTransform(-k,0,0,k,S+k*sx,-k*sy);            // lật như gương, cắt phần giữa
+  cg.drawImage(camVid,0,0,vw,vh);
+  if(filter!=="none"&&face&&performance.now()-faceSeen<600){
+    const u=face.d/100, c=Math.cos(-face.ang), sn=Math.sin(-face.ang);
+    const loc=(x,y)=>{const dx=(x-face.ex)/u,dy=(y-face.ey)/u;return {x:dx*c-dy*sn,y:dx*sn+dy*c};};
+    const N=loc(face.nx,face.ny), M=loc(face.mx,face.my);
+    cg.save(); cg.translate(face.ex,face.ey); cg.rotate(face.ang); cg.scale(u,u);
+    (FILTER_DRAW[filter]||(()=>{}))(cg,N,M);
+    cg.restore();
+  }
+}
+function camLoop(){
+  if(!camOn){ camLoopOn=false; drawBubble(); return; }
+  camLoopOn=true; detectFace(); drawBubble(); requestAnimationFrame(camLoop);
+}
+function startCamLoop(){ if(!camLoopOn) camLoop(); }
+
+/* Các mặt nạ: toạ độ tính theo khoảng cách hai mắt = 100, gốc ở giữa hai mắt, trục y hướng xuống cằm.
+   N = vị trí mũi, M = vị trí miệng. */
+function ell(c,x,y,rx,ry,rot,fill){c.beginPath();c.ellipse(x,y,rx,ry,rot||0,0,Math.PI*2);c.fillStyle=fill;c.fill();}
+function tri(c,p,fill){c.beginPath();c.moveTo(p[0],p[1]);c.lineTo(p[2],p[3]);c.lineTo(p[4],p[5]);c.closePath();c.fillStyle=fill;c.fill();}
+function whiskers(c,N,col){
+  c.strokeStyle=col;c.lineWidth=3;c.lineCap="round";
+  for(const sd of [-1,1]) for(const dy of [-12,4,20]){ c.beginPath(); c.moveTo(sd*38,N.y+10+dy*0.3); c.quadraticCurveTo(sd*80,N.y+4+dy,sd*125,N.y-4+dy*1.4); c.stroke(); }
+}
+function pointyEars(c,outer,inner){
+  for(const sd of [-1,1]){
+    c.save(); c.translate(sd*90,-150); c.rotate(sd*0.28); c.scale(1.3,1.3);
+    c.beginPath(); c.moveTo(-46,30); c.quadraticCurveTo(-18,-40,0,-78); c.quadraticCurveTo(18,-40,46,30); c.closePath(); c.fillStyle=outer; c.fill();
+    c.beginPath(); c.moveTo(-26,22); c.quadraticCurveTo(-10,-22,0,-50); c.quadraticCurveTo(10,-22,26,22); c.closePath(); c.fillStyle=inner; c.fill();
+    c.restore();
+  }
+}
+function roundEars(c,outer,inner){
+  for(const sd of [-1,1]){ ell(c,sd*108,-138,48,46,0,outer); ell(c,sd*108,-134,26,24,0,inner); }
+}
+const FILTER_DRAW={
+  cat(c,N,M){
+    pointyEars(c,"#F08A3C","#F9C0B8");
+    ell(c,-26,N.y+22,28,20,0,"rgba(255,255,255,.85)"); ell(c,26,N.y+22,28,20,0,"rgba(255,255,255,.85)");
+    c.beginPath(); c.moveTo(-16,N.y-6); c.quadraticCurveTo(0,N.y-12,16,N.y-6); c.quadraticCurveTo(4,N.y+12,0,N.y+12); c.quadraticCurveTo(-4,N.y+12,-16,N.y-6); c.fillStyle="#F2788A"; c.fill();
+    whiskers(c,N,"#4a3526");
+  },
+  dog(c,N,M){
+    for(const sd of [-1,1]){ ell(c,sd*120,-70,42,92,sd*-0.35,"#8B5A2B"); ell(c,sd*118,-60,24,64,sd*-0.35,"#B07A45"); }
+    ell(c,0,M.y+26,22,26,0,"#F2788A"); c.fillStyle="#D9536A"; c.fillRect(-2,M.y+10,4,30);
+    ell(c,0,N.y+2,30,21,0,"#1d1d1d"); ell(c,-9,N.y-6,9,5,-0.3,"rgba(255,255,255,.7)");
+  },
+  bunny(c,N,M){
+    for(const sd of [-1,1]){ c.save(); c.translate(sd*46,-190); c.rotate(sd*0.16); ell(c,0,0,34,105,0,"#FAFAFA"); ell(c,0,8,17,80,0,"#F7B3C2"); c.restore(); }
+    ell(c,0,N.y,17,12,0,"#F4889E");
+    c.fillStyle="#fff"; c.strokeStyle="#bbb"; c.lineWidth=2;
+    for(const x of [-12,1]){ c.beginPath(); c.roundRect?c.roundRect(x,M.y-6,11,20,3):c.rect(x,M.y-6,11,20); c.fill(); c.stroke(); }
+    whiskers(c,N,"#8a8a8a");
+  },
+  bear(c,N,M){
+    roundEars(c,"#8B5E3C","#D9A77A");
+    ell(c,0,N.y+18,62,46,0,"rgba(232,201,160,.95)");
+    ell(c,0,N.y,22,16,0,"#3a2418"); ell(c,-7,N.y-5,7,4,-0.3,"rgba(255,255,255,.6)");
+    c.strokeStyle="#3a2418"; c.lineWidth=4; c.lineCap="round";
+    c.beginPath(); c.moveTo(0,N.y+14); c.lineTo(0,N.y+30); c.moveTo(-16,N.y+38); c.quadraticCurveTo(0,N.y+30,16,N.y+38); c.stroke();
+  },
+  fox(c,N,M){
+    pointyEars(c,"#F0661D","#FFF4EA");
+    for(const sd of [-1,1]){ tri(c,[sd*20,N.y-30, sd*150,N.y+10, sd*30,N.y+44],"rgba(240,102,29,.92)"); tri(c,[sd*60,N.y+12, sd*150,N.y+10, sd*40,N.y+44],"rgba(255,248,240,.95)"); }
+    ell(c,0,N.y+2,20,14,0,"#1d1d1d");
+  },
+  panda(c,N,M){
+    roundEars(c,"#1f1f1f","#3a3a3a");
+    for(const sd of [-1,1]){
+      c.save(); c.translate(sd*50,4); c.rotate(sd*0.45);
+      c.beginPath(); c.ellipse(0,0,40,30,0,0,Math.PI*2); c.ellipse(0,0,19,15,0,0,Math.PI*2);
+      c.fillStyle="rgba(25,25,25,.9)"; c.fill("evenodd"); c.restore();
+    }
+    ell(c,0,N.y+2,18,12,0,"#1d1d1d");
+  }
+};
+renderFilterChips();
+
+/* ---------- Thử tài: ghi hình cả bài ---------- */
+function seek(t){return new Promise(r=>{if(Math.abs(video.currentTime-t)<0.01)return r();video.addEventListener("seeked",()=>r(),{once:true});video.currentTime=t;});}
+function waitPlaying(){return new Promise(r=>video.addEventListener("playing",()=>r(),{once:true}));}
+async function startVideo(){
+  if(video.error||(video.readyState===0&&video.networkState===3)) throw new Error(mediaErr(VIDEO_SRCS[0]));
+  const pl=waitPlaying();
+  try{ await video.play(); }catch(e){ throw new Error("Trình duyệt chặn phát video. Hãy bấm lại nút một lần nữa."); }
+  await pl;
+}
+function until(to,onFrame){return new Promise(r=>{
+  (function loop(){
+    if(abortFlag||video.ended||video.paused||video.currentTime>=to){return r();}
+    onFrame&&onFrame(); tick(); requestAnimationFrame(loop);
+  })();
+});}
+async function countdown(){
+  const ov=$("ov");
+  for(const n of ["3","2","1"]){ if(abortFlag)break; ov.innerHTML=`<div class="count">${n}</div>`; await sleep(700); }
+  ov.innerHTML="";
+}
+async function run(fn){
+  if(busy) return; prime(); lightPause(); abortFlag=false; msg(""); setBusy(true);
+  try{ await initAudio(); await fn(); }
+  catch(err){ console.error(err); msg(err.message||String(err)); }
+  finally{
+    video.pause(); orig.pause(); setBgm(1);
+    if(micNode){ try{micNode.disconnect()}catch(e){} micNode=null; }
+    badge(); $("ov").innerHTML=""; setBusy(false);
+  }
+}
+$("bStop").onclick=()=>{abortFlag=true;};
+
+const g=cv.getContext("2d");
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+// vẽ phụ đề karaoke vào video ghi hình
+function drawKaraoke(t){
+  const i=lineAt(t); if(i<0) return;
+  const L=LINES[i], W=cv.width, H=cv.height, zh=!!L.py;
+  const fs=Math.round(W*(zh?0.05:0.046)), pfs=Math.round(fs*0.48);
+  const font=zh?`700 ${fs}px ${getComputedStyle(document.documentElement).getPropertyValue("--hz")}`:`800 ${fs}px "Baloo 2",Nunito,sans-serif`;
+  const pfont=`700 ${pfs}px Nunito,sans-serif`;
+  g.font=font; const gap=zh?fs*0.08:fs*0.32;
+  const ws=L.u.map((u,k)=>{ g.font=font; let w=g.measureText(u).width; if(zh){ g.font=pfont; w=Math.max(w,g.measureText(L.py[k]||"").width); } return w; });
+  const total=ws.reduce((a,b)=>a+b,0)+gap*(ws.length-1);
+  const bh=parseFloat(ROOM.kara.height)/100*H, bb=parseFloat(ROOM.kara.bottom)/100*H;
+  const side=parseFloat(ROOM.kara.side||'3%')/100;
+  const boxH=Math.max(bh,(zh?fs*1.25+pfs*1.2:fs*1.3)+H*0.02), x0=W*side, y0=H-bb-boxH;
+  g.save(); g.fillStyle="rgba(255,255,255,.97)"; rr(g,x0,y0,W*(1-2*side),boxH,H*0.02); g.fill();
+  let x=(W-total)/2; const base=y0+boxH/2+(zh?fs*0.62:fs*0.36), pbase=base-fs*1.02;
+  const next=t<L.s;
+  L.u.forEach((u,k)=>{
+    const w=ws[k], s=L.ws[k], e=Math.max(L.we[k],s+0.05), p=t<=s?0:t>=e?1:(t-s)/(e-s);
+    const parts=[[font,u,base,"#2b2b2b"]]; if(zh) parts.push([pfont,L.py[k]||"",pbase,"#777"]);
+    parts.forEach(([f,txt,y,col])=>{
+      g.font=f; g.textAlign="center"; g.textBaseline="alphabetic";
+      g.globalAlpha=next?0.75:1; g.fillStyle=col; g.fillText(txt,x+w/2,y);
+      if(p>0){ g.save(); g.beginPath(); g.rect(x,y0,w*p,boxH); g.clip(); g.fillStyle="#D93A2B"; g.fillText(txt,x+w/2,y); g.restore(); }
+    });
+    x+=w+gap;
+  });
+  g.restore();
+}
+function drawFrame(){
+  const W=cv.width,H=cv.height;
+  g.drawImage(video,0,0,W,H);
+  drawKaraoke(video.currentTime);
+  if(camOn&&camVid.readyState>=2&&camVid.videoWidth){
+    const r=Math.round(Math.min(W,H)*0.2), cx=W-r-Math.round(W*0.03), cy=r+Math.round(H*0.03);
+    g.save(); g.beginPath(); g.arc(cx,cy,r,0,Math.PI*2); g.closePath(); g.clip();
+    g.drawImage(camCv,cx-r,cy-r,2*r,2*r);
+    g.restore();
+    g.beginPath(); g.arc(cx,cy,r,0,Math.PI*2); g.lineWidth=Math.round(H*0.012); g.strokeStyle="#fff"; g.stroke();
+  }
+}
+function pickVideoType(){
+  const types=['video/mp4;codecs="avc1.42E01E,mp4a.40.2"',"video/mp4","video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm"];
+  return types.find(t=>MediaRecorder.isTypeSupported(t));
+}
+async function recordWhole(){
+  const vs=cv.captureStream(30);
+  const stream=new MediaStream([vs.getVideoTracks()[0],mixDest.stream.getAudioTracks()[0]]);
+  const mt=pickVideoType();
+  const rec=new MediaRecorder(stream,{mimeType:mt,videoBitsPerSecond:2500000}); const chunks=[];
+  rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+  const stopped=new Promise(r=>rec.onstop=r);
+  await seek(0); drawFrame();
+  await countdown(); if(abortFlag) return null;
+  setBgm(0.85);
+  micNode=ctx.createMediaStreamSource(micStream); const mg=ctx.createGain(); mg.gain.value=1.6; micNode.connect(mg); mg.connect(mixDest);
+  const started=new Promise(r=>rec.onstart=r); rec.start(1000); await started;
+  badge("Đang ghi… hát theo phụ đề",true);
+  if($("guide").checked){ orig.volume=0.3; orig.currentTime=ORIG_OFFSET; orig.play().catch(()=>{}); }  // giọng mẫu chỉ phát ra loa, không ghi vào video
+  await startVideo();
+  await until((video.duration||120)-0.05,()=>{ drawFrame(); if(!orig.paused&&Math.abs(orig.currentTime-(video.currentTime+ORIG_OFFSET))>0.3) orig.currentTime=video.currentTime+ORIG_OFFSET; });
+  video.pause(); orig.pause(); rec.stop(); await stopped;
+  if(abortFlag) return null;
+  const type=(mt||"video/webm").split(";")[0];
+  return {blob:new Blob(chunks,{type}),ext:type.includes("mp4")?"mp4":"webm"};
+}
+function startRecording(){
+  if(busy) return;
+  prime();
+  run(async()=>{
+    if(!bgmGain){msg("Muốn ghi hình, hãy mở trang qua link GitHub Pages (https://...), không mở trực tiếp file.");return;}
+    if(!window.MediaRecorder||!cv.captureStream){msg("Trình duyệt này chưa hỗ trợ ghi hình. Hãy dùng Chrome, Edge hoặc Safari bản mới.");return;}
+    if(!camOn&&!camUserOff) await camStart();
+    if(!(await ensureMic())) return;
+    $("result").hidden=true; $("outVid").pause();
+    const r=await recordWhole();
+    if(!r){ msg("Đã dừng."); if(lastResult) $("result").hidden=false; return; }
+    showResult(r);
+  });
+}
+$("bRecCam").onclick=startRecording; $("bDub").onclick=startRecording;
+function showResult(r){
+  if(lastResult) URL.revokeObjectURL(lastResult.url);
+  const url=URL.createObjectURL(r.blob);
+  const name=($("stuName").value.trim()||"hoc-sinh").replace(/[\\/:*?"<>|]/g,"");
+  lastResult={url};
+  const ov=$("outVid"); ov.src=url; ov.hidden=true;
+  const dl=$("dl"); dl.href=url; dl.download=`${ROOM.fileBase}_${name}.${r.ext}`;
+  $("resInfo").textContent=`Video của ${name==="hoc-sinh"?"em":name} (${(r.blob.size/1048576).toFixed(1)} MB). Em xem lại, rồi tải về để nộp bài cho cô.`;
+  $("result").hidden=false;
+  $("result").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+$("bReview").onclick=()=>{ const ov=$("outVid"); ov.hidden=false; ov.currentTime=0; ov.play().catch(()=>{}); ov.scrollIntoView({behavior:"smooth",block:"nearest"}); };
+$("bRedo").onclick=()=>{ $("outVid").pause(); startRecording(); };
+
+refreshStage(); tick();
+</script>
+</body>
+</html>
